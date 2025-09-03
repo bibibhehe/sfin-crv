@@ -2,11 +2,12 @@ import * as React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
 import { gridSpacing } from 'store/constant';
-
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-// import SubCard from 'ui-component/cards/SubCard';
+import Button from '@mui/material/Button';
 import ListTextBox from 'ui-component/tables/ListTextBox';
+import ListTextBoxUpdate from 'ui-component/inputs/ListTextBoxUpdate';
+import TblpaymentRefund from 'services/Research/TblPaymentReRequest.service';
 
 import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles({
@@ -21,21 +22,36 @@ const useStyles = makeStyles({
     padding: '10px  0 0 0'
   },
   widthSize: {
-    width: '95%',
     margin: '0'
   }
 });
 const PaymentDetail = (props) => {
   const classes = useStyles();
 
-  const payment /* eslint-disable react/prop-types */ = props.payment;
+  const payment = props.payment;
 
   const { t, i18n } = useTranslation();
   const { InfDatetime, setInfDatetime } = useState({});
   var data = null;
   var dataRC = null;
   var dataBK = null;
+  const keyGetMCCGroup = [
+    { id: 'masterMerchantName', label: 'Master Merchant Name' },
+    { id: 'merchantCorporateName', label: 'Merchant Name' },
+    { id: 'merchantBranchName', label: 'Branch Name	' },
+    { id: 'merchantCashierName', label: 'Mã quầy' },
+    { id: 'fullOrderCode', label: 'Mã đơn hàng' }
+  ];
+  const keyGetMCCAccount = [
+    { id: 'benId', label: 'TCTV được ghi có' },
+    { id: 'debitAccount', label: 'STK ghi có' },
+    { id: 'traceNo', label: 'TraceNo' },
+    // { id: 'creditRc', label: 'Response Code' },
+    { id: 'createDateTime', label: 'Thời gian ghi nhận giao dịch' },
+    { id: 'acqId', label: 'TCTV được ghi có cuối cùng' },
+    { id: 'creditorAccount', label: 'STK ghi có cuối cùng' }
 
+  ];
   const keysToGetBkend = [
     'localDateTime',
     'settleDateTime',
@@ -50,7 +66,7 @@ const PaymentDetail = (props) => {
     'settlementCreditorAgent'
   ];
 
-  const keysToGetRC = ['responseCode', 'transactionStatus', 'creditorResponseCode'];
+  const keysToGetRC = ['responseCode', 'transactionStatus'];
   const keysToGetOrTransaction = [
     'localDate',
     'settleDate',
@@ -77,7 +93,6 @@ const PaymentDetail = (props) => {
     'cardAcceptNameLocation',
     'channelId'
   ];
-
   if (payment) {
     try {
       data = keysToGetOrTransaction.reduce((acc, key) => {
@@ -102,6 +117,21 @@ const PaymentDetail = (props) => {
       //
     }
   }
+
+  const handleResend = (id, status) => {
+    TblpaymentRefund.resend(id, status)
+      .then(
+        (response) => {
+          props.showAlertSuccess('Thành công');
+        },
+        (error) => {
+          const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
+          props.showAlert(message);
+        }
+      )
+    // .finally(() => setShowBackdrop(false));
+  };
+
   return (
     <>
       <Box component="fieldset" className={classes.nonBorder}>
@@ -128,6 +158,34 @@ const PaymentDetail = (props) => {
           </Grid>
         </Grid>
       </Box>
+      <Box component="fieldset" className={classes.nonBorder}>
+        <legend className={classes.tabTitle}>Merchant và đơn hàng</legend>
+        <Grid item xs={12}>
+          <Grid container spacing={gridSpacing} className={classes.widthSize}>
+            <ListTextBoxUpdate data={props.payment} listShow={keyGetMCCGroup} rowData={3} />
+          </Grid>
+        </Grid>
+      </Box>
+      <Box component="fieldset" className={classes.nonBorder}>
+        <legend className={classes.tabTitle}>Giao dịch ghi có tài khoản thực của Merchant</legend>
+        <Grid item xs={12}>
+          <Grid container spacing={gridSpacing} className={classes.widthSize}>
+            <ListTextBoxUpdate data={props.payment} listShow={keyGetMCCAccount} rowData={3} />
+          </Grid>
+        </Grid>
+      </Box>
+     
+      <br />
+      <Grid item xs={12} container>
+        <Button variant="contained" size="small" style={{ margin: 'auto' }} onClick={() => handleResend(payment.id, 'APPROVED')}>
+          APPROVE
+        </Button>
+        {payment && payment.status !== 'APPROVED' && (
+          <Button variant="contained" size="small" style={{ margin: 'auto' }} onClick={() => handleResend(payment.id, 'CANCELED')}>
+            CANCEL
+          </Button>
+        )}
+      </Grid>
     </>
   );
 };

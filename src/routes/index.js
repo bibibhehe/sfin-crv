@@ -9,11 +9,11 @@ import Loadable from 'ui-component/Loadable';
 import AuthenticationRoutes from './AuthenticationRoutes';
 
 const PaymentPage = Loadable(lazy(() => import('views/pages/main/Research/ResearchPayment/index')));
-const Payment2ndPage = Loadable(lazy(() => import('views/pages/main/Research/ResearchPayment2nd/index')));
-const PaymentReRequestPage = Loadable(lazy(() => import('views/pages/main/Research/ResearchPaymentReRequest/index')));
+// const Payment2ndPage = Loadable(lazy(() => import('views/pages/main/Research/ResearchPayment2nd/index')));
+const PaymentRefundPage = Loadable(lazy(() => import('views/pages/main/Research/ResearchPaymentRefund/index')));
 const HisMessageRaw = Loadable(lazy(() => import('views/pages/main/Research/HisMessageRaw/index')));
 
-const MessageInputPage = Loadable(lazy(() => import('views/pages/history/MessageInputPage')));
+// const MessageInputPage = Loadable(lazy(() => import('views/pages/history/MessageInputPage')));
 const DashboardDefault = Loadable(lazy(() => import('views/dashboard/Default')));
 const SystemParametersPage = Loadable(lazy(() => import('views/pages/administration/SystemParameterPage')));
 const ParticipantEndpointPage = Loadable(lazy(() => import('views/pages/administration/ParticipantEndpointPage')));
@@ -57,14 +57,14 @@ export default function ThemeRoutes() {
     children: [
       {
         path: '/',
-        element: isAuth ? <DashboardDefault /> : <Navigate to={'/login'} replace />
+        element: isAuth ? <PaymentPage /> : <Navigate to={'/login'} replace />
       },
       {
         path: 'dashboard',
         children: [
           {
             path: 'default',
-            element: isAuth ? <DashboardDefault /> : <Navigate to={'/login'} replace />
+            element: isAuth ? <PaymentPage /> : <Navigate to={'/login'} replace />
           }
         ]
       }
@@ -90,21 +90,13 @@ export default function ThemeRoutes() {
         element: isAuth ? <PaymentPage /> : <Navigate to={'/login'} replace />
       },
       {
-        path: '/pages/history/payment2nd',
-        element: isAuth ? <Payment2ndPage /> : <Navigate to={'/login'} replace />
-      },
-      {
-        path: '/pages/history/paymentReRequest',
-        element: isAuth ? <PaymentReRequestPage /> : <Navigate to={'/login'} replace />
+        path: '/pages/history/paymentRefund',
+        element: isAuth ? <PaymentRefundPage /> : <Navigate to={'/login'} replace />
       },
       {
         path: '/pages/history/hisMessageRaw',
         element: isAuth ? <HisMessageRaw /> : <Navigate to={'/login'} replace />
       },
-      {
-        path: '/pages/history/inputrequest',
-        element: isAuth ? <MessageInputPage /> : <Navigate to={'/login'} replace />
-      }
     ]
   };
 

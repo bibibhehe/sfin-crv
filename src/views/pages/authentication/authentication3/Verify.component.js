@@ -11,7 +11,6 @@ import { CircularProgress, Divider, Grid, Typography } from '@mui/material';
 // project imports
 import AuthWrapper1 from '../AuthWrapper1';
 import AuthCardWrapper from '../AuthCardWrapper';
-import Logo from 'ui-component/Logo';
 import AuthFooter from 'ui-component/cards/AuthFooter';
 import { Box } from '@mui/system';
 import { useEffect } from 'react';

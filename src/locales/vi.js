@@ -7,7 +7,7 @@ const translation = {
         inputMessage: 'Bản tin đến',
         payment: 'Giao dịch',
         payment2nd: 'Giao dịch Ủy nhiệm Chi ',
-        paymentReRequest: 'Duyệt giao dịch Ủy nhiệm Chi',
+        paymentRefund: 'Giao dich hoàn trả',
       },
       report: {
         title: 'Báo cáo',
@@ -365,8 +365,8 @@ const translation = {
       detailDialogTitle: 'Giao dịch',
       detailDialogTitleRefun: 'Hoàn Trả'
     },
-    paymentReRequest: {
-      title: 'Duyệt giao dịch Ủy nhiệm Chi',
+    paymentRefund: {
+      title: 'Giao dich hoàn trả',
       detailDialogTitle: 'Giao dịch',
       detailDialogTitleRefun: 'Hoàn Trả'
     },

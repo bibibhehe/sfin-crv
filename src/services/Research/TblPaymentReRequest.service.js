@@ -5,7 +5,7 @@ import authHeader from 'utils/AuthHeader';
 const API_URL = '/api/payment/';
 const API_URL_PAY = '/api/';
 
-class TblPaymentReRequestService {
+class TblpaymentRefundService {
   search(paging, datetimeRange, filtersInput, type) {
     let api = API_URL_PAY;
     const newfiltersInput = {};
@@ -59,4 +59,4 @@ class TblPaymentReRequestService {
     }
 }
 
-export default new TblPaymentReRequestService();
+export default new TblpaymentRefundService();

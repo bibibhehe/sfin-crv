@@ -19,6 +19,8 @@ import ServiceApi_Global from 'services/Global.service';
 
 import Backdrop from 'ui-component/loadingpages/loadingwaiting';
 import SelectBox from 'ui-component/inputs/selectBox';
+import SelectMultiBox from 'ui-component/inputs/SelectMutilBox';
+
 import CustomSnackbar from 'ui-component/cards/CustomSnackbar';
 import { makeStyles } from '@material-ui/core/styles';
 import format from 'date-fns/format';
@@ -26,6 +28,7 @@ import startOfDay from 'date-fns/startOfDay';
 import endOfDay from 'date-fns/endOfDay';
 import IosShareOutlined from '@mui/icons-material/IosShareOutlined';
 import { saveAs } from 'file-saver';
+import { formatCurency } from 'common/GuiUtils';
 
 
 const useStyles = makeStyles({
@@ -69,8 +72,6 @@ const PaymentPage = () => {
     endDate: today
   });
   const [filtersInput, setFiltersInput] = useState({
-    acqId: ' ',
-    benId: ' ',
     traceNo: '',
     orderCode: '',
     channelId: ' ',
@@ -82,7 +83,7 @@ const PaymentPage = () => {
     responseCode: ' ',
     masterMerchantId: ' ',
     merchantId: ' ',
-    merchantBranchId: ' ',
+    merchantBranchId: [],
     transationStatus: ' '
   });
   const get_bankList_napas = () => {
@@ -150,33 +151,20 @@ const PaymentPage = () => {
   ];
 
   const headers = [
-    { id: 'stt', label: 'STT', minWidth: 50, spaneNumber: 20 },
-    {
-      id: 'GD1',
-      label: 'Giao dịch 1',
-      align: 'center',
-      element: [
-        { id: 'creditAccount', label: 'Đơn hàng' },
-        { id: 'responseCode', label: 'Response Code' },
-        { id: 'acceptDatetime', label: 'Thời gian tạo' },
-        { id: 'ACQ', label: 'TCPL' },
-        { id: 'BEN', label: 'TCTT' },
-        { id: 'debitAccount', label: 'Debit Account' },
-        { id: 'Trans Ref', label: 'Transaction Reference' },
-      ]
-    },
-    {
-      id: 'GD2',
-      label: 'Giao dịch 2',
-      align: 'center',
-      element: [
-        { id: 'realMerchantBenId', label: 'TCTV ghi có' },
-        { id: 'realMerchantAccount', label: 'STK ghi có' },
-        { id: 'creditTrace', label: 'TraceNo' },
-        { id: 'creditRc', label: 'Response Code' },
-        { id: 'creditAcceptDateTime', label: 'Thời giam ghi nhận GD' },
-      ]
-    }
+   { id: 'stt', label: 'STT', minWidth: 50, align: 'left' },
+    { id: 'creditAccount', label: 'Đơn hàng', minWidth: 200, align: 'left' },
+    { id: 'responseCode', label: 'Response Code', minWidth: 200, align: 'left' },
+    { id: 'acceptDatetime', label: 'Thời gian tạo', minWidth: 150, align: 'left' },
+    { id: 'ACQ', label: 'TCPL', minWidth: 150, align: 'left' },
+    { id: 'BEN', label: 'TCTT', minWidth: 150, align: 'left' },
+    { id: 'debitAccount', label: 'Debit Account', minWidth: 200, align: 'left' },
+    { id: 'Trans Ref', label: 'Transaction Reference', minWidth: 200, align: 'left' },
+    { id: 'Amount', label: 'Amount', minWidth: 150, align: 'left' },
+    { id: 'Trace', label: 'Trace', minWidth: 150, align: 'left' },
+    { id: 'masterM', label: 'Master Merchant Name', minWidth: 150, align: 'left' },
+    { id: 'merchant', label: 'Merchant Name', minWidth: 150, align: 'left' },
+    { id: 'branch', label: 'Branch Name', minWidth: 150, align: 'left' },
+    { id: 'merchantCashierName', label: 'Cashier Name', minWidth: 150, align: 'left' }
   ];
   const [showBackdrop, setShowBackdrop] = useState(false);
   const [masterMerchantList, setmasterMerchantList] = useState(null);
@@ -356,13 +344,13 @@ const PaymentPage = () => {
 
     if (name == 'masterMerchantId') {
       newFiltersInput['merchantId'] = ' ';
-      newFiltersInput['merchantBranchId'] = ' ';
+      newFiltersInput['merchantBranchId'] = [];
       setbussinessList(null);
       setbranchList(null);
       get_bussiness_list(value);
     }
     if (name == 'merchantId') {
-      newFiltersInput['merchantBranchId'] = ' ';
+      newFiltersInput['merchantBranchId'] = [];
       setbranchList(null);
       get_branch_list(value);
     }
@@ -401,37 +389,30 @@ const PaymentPage = () => {
 
         var tableRow = (
           <TableRow key={rowIndex} className={rowIndex % 2 === 0 ? classes.evenRow : ''}>
-            <TableCell scope="row" className={classes.rowSelect}>
-              {paging.size * paging.page + rowIndex}
-            </TableCell>
-            <TableCell className={classes.rowSelect}>
-              <PaymentModal payment={object} typePayment={messageTypeShow} text={object.destAccount} showAlertSuccess={showSucces} showAlert={showAlert} />
-            </TableCell>
-
-            <TableCell className={classes.rowSelect}>{chipColorByRespCode(object.responseCode)}</TableCell>
-            <TableCell className={classes.rowSelect}>{object.acceptDatetime}</TableCell>
-            <TableCell
-              className={classes.rowSelect}
-              style={
-                object.issId && object.issId.startsWith('704')
-                  ? { backgroundColor: '#e3f2fd' } // màu xanh nhạt, bạn có thể đổi màu khác nếu muốn
-                  : {}
-              }
-            >
-              <BankInfo bankId={object.acqId} />
-            </TableCell>
-            <TableCell className={classes.rowSelect}>
-              <BankInfo bankId={object.benId} />
-            </TableCell>
-            <TableCell className={classes.rowSelect}>{object.fromAccount}</TableCell>
-            <TableCell className={classes.rowSelect}>{object.transactionReference}</TableCell>
-
-            <TableCell className={classes.rowSelect}>{object.realMerchantBenId}</TableCell>
-            <TableCell className={classes.rowSelect}>{object.realMerchantAccount}</TableCell>
-            <TableCell className={classes.rowSelect}>{object.creditTrace}</TableCell>
-            <TableCell className={classes.rowSelect}>{chipColorByRespCode(object.creditRc)}</TableCell>
-            <TableCell className={classes.rowSelect}>{object.creditAcceptDateTime}</TableCell>
-          </TableRow>
+                      <TableCell scope="row" className={classes.rowSelect}>
+                        {paging.size * paging.page + rowIndex}
+                      </TableCell>
+                      <TableCell className={classes.rowSelect}>
+                        <PaymentModal payment={object} text={object.destAccount} showAlertSuccess={showSucces} showAlert={showAlert}/>
+                      </TableCell>
+                      <TableCell className={classes.rowSelect}>{chipColorByRespCode(object.responseCode)}</TableCell>
+                      <TableCell className={classes.rowSelect}>{object.acceptDatetime}</TableCell>
+                      <TableCell className={classes.rowSelect}>
+                        <BankInfo bankId={object.acqId} />
+                      </TableCell>
+                      <TableCell className={classes.rowSelect}>
+                        <BankInfo bankId={object.benId} />
+                      </TableCell>
+                      <TableCell className={classes.rowSelect}>{object.fromAccount}</TableCell>
+                      <TableCell className={classes.rowSelect}>{object.transactionReference}</TableCell>
+          
+                      <TableCell className={classes.rowSelect}>{formatCurency(object.transactionAmount)}</TableCell>
+                      <TableCell className={classes.rowSelect}>{object.traceNo}</TableCell>
+                      <TableCell className={classes.rowSelect}>{object.masterMerchantName}</TableCell>
+                      <TableCell className={classes.rowSelect}>{object.merchantCorporateName}</TableCell>
+                      <TableCell className={classes.rowSelect}>{object.merchantBranchName}</TableCell>
+                      <TableCell className={classes.rowSelect}>{object.merchantCashierName}</TableCell>
+                    </TableRow>
         );
         listTag.push(tableRow);
       });
@@ -465,7 +446,7 @@ const PaymentPage = () => {
             <Grid item xs={12} md={2} container style={{ paddingLeft: '0' }}>
               <TextField
                 name="orderCode"
-                label="Mã đơn hàng"
+                label="Transaction Ref No"
                 fullWidth
                 value={filtersInput['orderCode']}
                 onChange={(event) => {
@@ -491,7 +472,7 @@ const PaymentPage = () => {
           <SelectBox
             name="masterMerchantId"
             value={filtersInput.masterMerchantId}
-            label="Đơn vị phát triển mạng lưới"
+            label="Master Merchant"
             object={masterMerchantList}
             showEm="1"
             onChange={onFiltersInputChange}
@@ -501,17 +482,17 @@ const PaymentPage = () => {
           <SelectBox
             name="merchantId"
             value={filtersInput.merchantId}
-            label="Đơn vị chấp nhận thanh toán"
+            label="Merchant"
             object={bussinessList}
             showEm="1"
             onChange={onFiltersInputChange}
           />
         </Grid>
         <Grid item xs={3}>
-          <SelectBox
+          <SelectMultiBox
             name="merchantBranchId"
             value={filtersInput.merchantBranchId}
-            label="Branch"
+            label="Store"
             object={branchList}
             showEm="1"
             onChange={onFiltersInputChange}
@@ -527,7 +508,7 @@ const PaymentPage = () => {
             onChange={onFiltersInputChange}
           />
         </Grid>
-        <Grid item xs={3}>
+        {/* <Grid item xs={3}>
           <SelectBox
             name="messageType"
             value={messageType}
@@ -538,8 +519,8 @@ const PaymentPage = () => {
               handleChangeValue(event);
             }}
           />
-        </Grid>
-        <Grid item xs={3}>
+        </Grid> */}
+        {/* <Grid item xs={3}>
           <SelectBox
             name="channelId"
             value={filtersInput.channelId}
@@ -548,8 +529,8 @@ const PaymentPage = () => {
             showEm="0"
             onChange={onFiltersInputChange}
           />
-        </Grid>
-        <Grid item xs={3}>
+        </Grid> */}
+        {/* <Grid item xs={3}>
           <SelectBox
             name="responseCode"
             value={filtersInput.responseCode}
@@ -558,8 +539,8 @@ const PaymentPage = () => {
             showEm="0"
             onChange={onFiltersInputChange}
           />
-        </Grid>
-        <Grid item xs={3}>
+        </Grid> */}
+        {/* <Grid item xs={3}>
           <TextField
             name="traceNo"
             label="Trace no"
@@ -569,8 +550,8 @@ const PaymentPage = () => {
               onFiltersInputChange(event);
             }}
           />
-        </Grid>{' '}
-        <Grid item xs={3}>
+        </Grid> */}
+        {/* <Grid item xs={3}>
           <SelectBox
             name="fromAccountType"
             value={filtersInput.fromAccountType}
@@ -647,7 +628,7 @@ const PaymentPage = () => {
               onFiltersInputChange(event);
             }}
           />
-        </Grid>
+        </Grid> */}
       </MoreFilterAccordion>
 
       <Grid item xs={12}>

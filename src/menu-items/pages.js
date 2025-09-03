@@ -24,17 +24,10 @@ const getPagesItem = (t) => {
             target: false,
           }, 
           {
-            id: 'payment2nd',
-            title: t('sidebar.main.history.payment2nd'),
+            id: 'paymentRefund',
+            title: t('sidebar.main.history.paymentRefund'),
             type: 'item',
-            url: '/pages/history/payment2nd',
-            target: false,
-          },
-          {
-            id: 'paymentReRequest',
-            title: t('sidebar.main.history.paymentReRequest'),
-            type: 'item',
-            url: '/pages/history/paymentReRequest',
+            url: '/pages/history/paymentRefund',
             target: false,
           },
           {
@@ -44,14 +37,6 @@ const getPagesItem = (t) => {
             url: '/pages/history/hisMessageRaw',
             target: false,
           },
-          {
-            id: 'inputrequest',
-            title: t('sidebar.main.history.inputMessage'),
-            type: 'item',
-            show: false,
-            url: '/pages/history/inputrequest',
-            target: false,
-          }
         ]
       },
       {

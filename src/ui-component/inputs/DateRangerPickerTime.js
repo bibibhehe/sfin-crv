@@ -91,14 +91,14 @@ const DateRangerPickerTime = (props) => {
           onChange={(newValue) => handleChangeBegin(props.beginName, newValue)}
           className={classes.datePicker}
           name={props.beginName}
-          inputFormat="yyyy/MM/dd HH:mm:ss"
+          format="dd/MM/yyyy HH:mm:ss"
           views={['year', 'month', 'day', 'hours', 'minutes', 'seconds']}
-          componentsProps={{
-            actionBar: {
-              actions: ['today', 'clear', 'accept']
-            },
-            actionBarLayout: 'row'
-          }}
+          // componentsProps={{
+          //   actionBar: {
+          //     actions: ['today', 'clear', 'accept']
+          //   },
+          //   actionBarLayout: 'row'
+          // }}
           renderInput={renderInput}
         />
         <DateTimePicker
@@ -108,7 +108,7 @@ const DateRangerPickerTime = (props) => {
           onChange={(newValue) => handleChangeEnd(props.endName, newValue)}
           className={classes.datePicker}
           name={props.endName}
-          inputFormat="yyyy/MM/dd HH:mm:ss"
+          format="dd/MM/yyyy HH:mm:ss"
           views={['year', 'month', 'day', 'hours', 'minutes', 'seconds']}
           //   componentsProps={{
           //     actionBar: {

@@ -11,17 +11,16 @@ import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import PaymentDetail from './PaymentDetail';
+import MessageRaw from '../../ResearchPayment/FormLoad/MessageRaw';
 
 import { Grid } from '@mui/material';
 import Link from '@mui/material/Link';
 import CancelOutline from '@mui/icons-material/ClearOutlined';
-import MessageRaw from './MessageRaw';
 
 const PaymentModal = (props) => {
   const [open, setOpen] = useState(false);
   const [tabIndex, setTabIndex] = useState('1');
   const [isTabMessageRaw, setIsTabMessageRaw] = useState(false);
-
 
   const { t } = useTranslation();
   const [dataDetail, setdataDetail] = useState(null);
@@ -100,7 +99,7 @@ const PaymentModal = (props) => {
                 </TabList>
               </Box>
               <TabPanel value="1">
-                <PaymentDetail payment={dataDetail} showAlertSuccess={showSucces} showAlert={showAlert} />
+                <PaymentDetail payment={dataDetail} handleClose={handleClose} showAlertSuccess={showSucces} showAlert={showAlert} />
               </TabPanel>
               <TabPanel value="2">
                 <MessageRaw messageRaw={dataDetail} isActive={isTabMessageRaw} handleClose={handleClose} showAlertSuccess={showSucces} showAlert={showAlert} />
@@ -108,11 +107,6 @@ const PaymentModal = (props) => {
             </TabContext>
           </Box>
         </DialogContent>
-        {/* <DialogActions>
-          <Button autoFocus onClick={handleClose}>
-            {t('common.button.close')}
-          </Button>
-        </DialogActions> */}
       </Dialog>
     </div>
   );

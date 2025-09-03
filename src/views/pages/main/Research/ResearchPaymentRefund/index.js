@@ -6,7 +6,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import MyTablePaginationCustom from 'ui-component/tables/MyTablePaginationCustom';
 import SearchIcon from '@mui/icons-material/Search';
-import TblPaymentReRequest from 'services/Research/TblPaymentReRequest.service';
+import TblpaymentRefund from 'services/Research/TblPaymentReRequest.service';
 import PaymentModal from './FormLoad/PaymentModal';
 import defaultSettings from 'defaultSetting';
 import DateRangePicker from 'ui-component/inputs/DateRangerPickerTime';
@@ -190,7 +190,7 @@ const PaymentPageReRequest = () => {
         }
       } else newfiltersInput[key] = filtersDateRange[key];
     }
-    TblPaymentReRequest.exportExcel(paging, newfiltersInput, filtersInput, messageType)
+    TblpaymentRefund.exportExcel(paging, newfiltersInput, filtersInput, messageType)
       .then(
         (response) => {
           handleLoadingClick();
@@ -234,7 +234,7 @@ const PaymentPageReRequest = () => {
         }
       } else newfiltersInput[key] = filtersDateRange[key];
     }
-    TblPaymentReRequest.search(paging, newfiltersInput, filtersInput, messageType)
+    TblpaymentRefund.search(paging, newfiltersInput, filtersInput, messageType)
       .then(
         (response) => {
           handleLoadingClick();
@@ -361,7 +361,7 @@ const PaymentPageReRequest = () => {
   };
 
   return (
-    <MainCard title={t('main.paymentReRequest.title')}>
+    <MainCard title={t('main.paymentRefund.title')}>
       <Grid xs={10} justifyContent="center" alignItems="center" container style={{ margin: 'auto' }}>
         <Grid item xs={12} container justifyContent="flex-end">
           <Grid container justifyContent="space-between" alignItems="center" spacing={2}>

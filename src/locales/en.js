@@ -385,7 +385,7 @@ const translation = {
     }
   },
   auth: {
-    loginWelcome: 'Sign in using ACH OAuth'
+    loginWelcome: 'Sign in using CRV OAuth'
   }
 };
 
