@@ -8,16 +8,16 @@ export function AppDictionaryProvider({ children }) {
 
   useEffect(() => {
     // Gọi API để lấy danh sách ngân hàng
-    TblNapasBankService.list()
-      .then((responseNapasBank) => {
-        const listNapasBank = responseNapasBank.data;
-        setAppDictionary({
-          listNapasBank: listNapasBank
-        });
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    // TblNapasBankService.list()
+    //   .then((responseNapasBank) => {
+    //     const listNapasBank = responseNapasBank.data;
+    //     setAppDictionary({
+    //       listNapasBank: listNapasBank
+    //     });
+    //   })
+    //   .catch((error) => {
+    //     console.error(error);
+    //   });
   }, []);
 
   return <AppDictionaryContext.Provider value={appDictionary}>{children}</AppDictionaryContext.Provider>;

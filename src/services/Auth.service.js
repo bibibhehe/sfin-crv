@@ -1,15 +1,15 @@
 import axios from 'axios';
 
-const API_URL = '/api/oauth/';
+const API_URL = '/mms/api/';
 class AuthService {
   getCurrentUser() {
     const user = JSON.parse(sessionStorage.getItem('user'));
     return user;
   }
 
-  authorize() {
+  login(userInput) {
     return axios
-      .get(API_URL + 'authorize', {});
+      .post(API_URL + 'auth/signin', userInput);
   }
 
   generateToken(code, state, redirectUri) {

@@ -3,7 +3,7 @@
   "version": "3.3.2",
   "private": true,
   "homepage": "/fe",
-  "proxy": "https://localhost:8099/",
+  "proxy": "https://dev-ibft20.napas.com.vn:8018",
   "dependencies": {
     "@emotion/cache": "^11.11.0",
     "@emotion/react": "^11.11.1",

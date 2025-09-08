@@ -156,10 +156,12 @@ const ProfileSection = () => {
                       <Stack direction="row" spacing={0.5} alignItems="center">
                         <Typography variant="h4">Xin chào,</Typography>
                         <Typography component="span" variant="h4" sx={{ fontWeight: 400 }}>
-                          {userInfo?.fullName}
+                          {userInfo?.username}
                         </Typography>
                       </Stack>
-                      <Typography variant="subtitle2">{userInfo?.username}</Typography>
+                      <Typography variant="subtitle2">
+                        {userInfo?.roles}
+                      </Typography>
                     </Stack>
                   </Box>
                   <PerfectScrollbar style={{ height: '100%', maxHeight: 'calc(100vh - 250px)', overflowX: 'hidden' }}>

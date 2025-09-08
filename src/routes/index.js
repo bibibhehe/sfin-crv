@@ -9,32 +9,17 @@ import Loadable from 'ui-component/Loadable';
 import AuthenticationRoutes from './AuthenticationRoutes';
 
 const PaymentPage = Loadable(lazy(() => import('views/pages/main/Research/ResearchPayment/index')));
-// const Payment2ndPage = Loadable(lazy(() => import('views/pages/main/Research/ResearchPayment2nd/index')));
 const PaymentRefundPage = Loadable(lazy(() => import('views/pages/main/Research/ResearchPaymentRefund/index')));
 const HisMessageRaw = Loadable(lazy(() => import('views/pages/main/Research/HisMessageRaw/index')));
 
-// const MessageInputPage = Loadable(lazy(() => import('views/pages/history/MessageInputPage')));
-const DashboardDefault = Loadable(lazy(() => import('views/dashboard/Default')));
 const SystemParametersPage = Loadable(lazy(() => import('views/pages/administration/SystemParameterPage')));
 const ParticipantEndpointPage = Loadable(lazy(() => import('views/pages/administration/ParticipantEndpointPage')));
 
-const ParticipantConfig = Loadable(lazy(() => import('views/pages/operation/Config/ParticipantsConfig/index')));
 
-const FeeDeclaration = Loadable(lazy(() => import('views/pages/operation/declaration/feeDeclaration/index')));
 const ReportFee = Loadable(lazy(() => import('views/pages/main/report/reportFee/index')));
-const ParticipantStatusPage = Loadable(lazy(() => import('views/pages/operation/Config/ConfigFee/index')));
 const HisPortalUserActionPage = Loadable(lazy(() => import('views/pages/administration/HisPortalUserActionPage')));
-const AssignPariPage = Loadable(lazy(() => import('views/pages/operation/declaration/feeParticipant/index')));
-const AssignPariPageFee = Loadable(lazy(() => import('views/pages/operation/declaration/feeParticipantbyFee/index')));
-const LadderConfig = Loadable(lazy(() => import('views/pages/operation/Config/LadderConfig/index')));
 
 const DeclareDCBS = Loadable(lazy(() => import('views/pages/main/paymentReconciliation/QTBS/DeclareQTBS/index')));
-const SpecialPropgram = Loadable(lazy(() => import('views/pages/operation/ConfigFee/SpecialPropgram/index')));
-const SpecialAccount = Loadable(lazy(() => import('views/pages/operation/ConfigFee/SpecialAccount/index')));
-const ChargingChannel = Loadable(lazy(() => import('views/pages/operation/ConfigFee/ChargingChannel/index')));
-
-const ConfigTimeSession = Loadable(lazy(() => import('views/pages/operation/ConfigTime/ConfigSession/index')));
-const ConfigHoliday = Loadable(lazy(() => import('views/pages/operation/ConfigTime/ConfigHoliday/index')));
 
 //manager
 const ManageMerchantMaster = Loadable(lazy(() => import('views/pages/main/manager/managerMasterMerchant/index')));
@@ -43,8 +28,11 @@ const ManageParticipants = Loadable(lazy(() => import('views/pages/main/manager/
 const ManageParticipantsBank = Loadable(lazy(() => import('views/pages/main/manager/managerParticipantBank/index')));
 const ManageMerchantPersonal = Loadable(lazy(() => import('views/pages/main/manager/managerPersonal/index')));
 const ManagerVVirtualAccount = Loadable(lazy(() => import('views/pages/main/manager/managerVVirtualAccount/index')));
-
 //end manager
+
+const ManageUser = Loadable(lazy(() => import('views/pages/main/user/managerUser/index')));
+const ManagePermission = Loadable(lazy(() => import('views/pages/main/user/managerPermission/index')));
+
 
 // ==============================|| ROUTING RENDER ||============================== //
 
@@ -70,6 +58,7 @@ export default function ThemeRoutes() {
       }
     ]
   };
+
   const ReportRoutes = {
     path: '/',
     element: <MainLayout />,
@@ -134,20 +123,7 @@ export default function ThemeRoutes() {
       }
     ]
   };
-  const AssignPariRoutes = {
-    path: '/',
-    element: <MainLayout />,
-    children: [
-      {
-        path: '/pages/operation/assigntoParticipant',
-        element: isAuth ? <AssignPariPage /> : <Navigate to={'/login'} replace />
-      },
-      {
-        path: '/pages/operation/assigntoParticipantFee',
-        element: isAuth ? <AssignPariPageFee /> : <Navigate to={'/login'} replace />
-      }
-    ]
-  };
+  
   const paymentReconciliation = {
     path: '/',
     element: <MainLayout />,
@@ -155,53 +131,10 @@ export default function ThemeRoutes() {
       {
         path: '/pages/paymentReconciliation/DeclareDCBS',
         element: isAuth ? <DeclareDCBS /> : <Navigate to={'/login'} replace />
-        // element: <DeclareDCBS />
       }
     ]
   };
 
-  const OperationRoutes = {
-    path: '/',
-    element: <MainLayout />,
-    children: [
-      {
-        path: '/pages/operation/feeConfiguration',
-        element: isAuth ? <ParticipantStatusPage /> : <Navigate to={'/login'} replace />
-      },
-      {
-        path: '/pages/operation/feeDeclaration',
-        element: isAuth ? <FeeDeclaration /> : <Navigate to={'/login'} replace />
-        // element: <FeeDeclaration />
-      },
-      {
-        path: '/pages/operation/ParticipantConfig',
-        element: isAuth ? <ParticipantConfig /> : <Navigate to={'/login'} replace />
-        // element: <ParticipantConfig />
-      },
-      {
-        path: '/pages/operation/LadderConfig',
-        element: isAuth ? <LadderConfig /> : <Navigate to={'/login'} replace />
-      },
-      {
-        path: '/pages/operation/SpecialPropgram',
-        element: isAuth ? <SpecialPropgram /> : <Navigate to={'/login'} replace />
-      },
-      {
-        path: '/pages/operation/configurationSPAccount',
-        element: isAuth ? <SpecialAccount /> : <Navigate to={'/login'} replace />
-      },
-
-      { path: '/pages/operation/configurationChargingChannel', element: isAuth ? <ChargingChannel /> : <Navigate to={'/login'} replace /> },
-      {
-        path: '/pages/operation/configTimeSession',
-        element: isAuth ? <ConfigTimeSession /> : <Navigate to={'/login'} replace />
-      },
-      {
-        path: '/pages/operation/configHoliday',
-        element: isAuth ? <ConfigHoliday /> : <Navigate to={'/login'} replace />
-      }
-    ]
-  };
 
   const Manager = {
     path: '/',
@@ -214,26 +147,37 @@ export default function ThemeRoutes() {
       {
         path: '/pages/manager/manager-merchant-bussiness',
         element: isAuth ? <ManageMerchantBussiness /> : <Navigate to={'/login'} replace />
-        // element: <ManageMerchantBussiness />
       },
       {
         path: '/pages/manager/manager-merchant-personal',
         element: isAuth ? <ManageMerchantPersonal /> : <Navigate to={'/login'} replace />
-        // element: <ManageMerchantBussiness />
       },
       {
         path: '/pages/manager/manager-participant',
         element: isAuth ? <ManageParticipants /> : <Navigate to={'/login'} replace />
-        // element: <ManageMerchantBussiness />
       },
       {
         path: '/pages/manager/manager-participantBank',
         element: isAuth ? <ManageParticipantsBank /> : <Navigate to={'/login'} replace />
-        // element: <ManageMerchantBussiness />
       },
       {
         path: '/pages/manager/manager-VVirtualAccount',
         element: isAuth ? <ManagerVVirtualAccount /> : <Navigate to={'/login'} replace />
+      },
+    ]
+  };
+
+  const User = {
+    path: '/',
+    element: <MainLayout />,
+    children: [
+      {
+        path: '/pages/user/manager-user',
+        element: isAuth ? <ManageUser /> : <Navigate to={'/login'} replace />
+      },
+      {
+        path: '/pages/user/manager-permission',
+        element: isAuth ? <ManagePermission /> : <Navigate to={'/login'} replace />
       },
     ]
   };
@@ -245,8 +189,7 @@ export default function ThemeRoutes() {
     AuthenticationRoutes,
     HistoryRoutes,
     AdministrationRoutes,
-    OperationRoutes,
-    AssignPariRoutes,
-    paymentReconciliation
+    paymentReconciliation,
+    User
   ]);
 }

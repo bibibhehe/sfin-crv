@@ -1,6 +1,6 @@
 import AuthService from 'services/Auth.service';
 import ServiceAlert from 'common/ServiceAlert';
-import config from 'config.js';
+import TextField from 'ui-component/inputs/CustomTextField';
 
 // material-ui
 import { Button, CircularProgress, Divider, Grid, Typography } from '@mui/material';
@@ -14,37 +14,56 @@ import AnimateButton from 'ui-component/extended/AnimateButton';
 import { Box } from '@mui/system';
 import { useState } from 'react';
 import { useEffect } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+
 
 const Login = () => {
-  const [oauthServerUrl, setOauthServerUrl] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [userInput, setUserInput] = useState({
+    username: '',
+    password: '',
+  });
   const { t, i18n } = useTranslation();
 
   const getAuthorize = () => {
-    AuthService.authorize().then(
-      (response) => {
-        setLoading(false);
+    AuthService.login(userInput)
+      .then(
+        (response) => {
+          console.log('response', response);
+          if (response.data && response.data.accessToken) {
+            sessionStorage.setItem('token', JSON.stringify(response.data));
+            let tmp = response.data;
+            if (!tmp.username) tmp.username = 'unknown';
+            if (!tmp.roles) tmp.roles = 'unknown';
+            sessionStorage.setItem('user', JSON.stringify(tmp));
+            navigate('/dashboard/default');
+            window.location.reload();
+          } else {
+            throw new Error('accessToken undefined !');
+          }
+        },
+        (error) => {
+          setLoading(false);
+          const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
+          ServiceAlert.error('Lỗi', message);
+        }
+      )
+  };
 
-        const oauthParams = new URLSearchParams(response.data.oauthInfo).toString();
-        const redirectUri = window.location.origin + config.basename + '/verify';
-        const newOauthServerUrl = `${response.data.authUri}?redirectUri=${redirectUri}&${oauthParams}`;
-        setOauthServerUrl(newOauthServerUrl);
-      },
-      (error) => {
-        setLoading(false);
-        const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
-        ServiceAlert.error('Lỗi', message);
-      }
-    );
+  const onUserInputChange = (event) => {
+    const newUserInput = { ...userInput };
+    newUserInput[event.target.name] = event.target.value;
+    setUserInput(newUserInput);
   };
 
   useEffect(() => {
-    getAuthorize();
   }, []);
 
   const handleLogin = () => {
-    setLoading(true);
-    window.location.href = oauthServerUrl;
+    // setLoading(true);
+    // window.location.href = oauthServerUrl;
+    getAuthorize();
   };
 
   return (
@@ -57,6 +76,28 @@ const Login = () => {
                 <Grid container spacing={2} alignItems="center" justifyContent="center">
                   <Grid item sx={{ mb: 3 }}>
                     <Typography variant="h3">{t('auth.loginWelcome')}</Typography>
+                  </Grid>
+                  {/* Thêm input cho tài khoản và mật khẩu */}
+                  <Grid item xs={12}>
+                    <Box sx={{ mt: 1 }}>
+                      <TextField
+                        name="username"
+                        type="text"
+                        label="Tài khoản"
+                        fullWidth
+                        value={userInput['username']}
+                        onChange={onUserInputChange}
+                      />
+                      <Box sx={{ mt: 2 }} />
+                      <TextField
+                        name="password"
+                        type="password"
+                        label="Mật khẩu"
+                        fullWidth
+                        value={userInput['password']}
+                        onChange={onUserInputChange}
+                      />
+                    </Box>
                   </Grid>
                   <Grid item xs={12}>
                     <Box sx={{ mt: 2 }}>
