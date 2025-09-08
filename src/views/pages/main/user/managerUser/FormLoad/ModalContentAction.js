@@ -12,7 +12,7 @@ import CancelOutline from '@mui/icons-material/ClearOutlined';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from 'ui-component/inputs/CustomTextField';
 import SelectBox from 'ui-component/inputs/selectBox';
-import ServiceAPI from 'services/ManagerMerchant/MerchantMaster.service';
+import ServiceAPI from 'services/User.service';
 
 const useStyles = makeStyles((theme) => ({
   evenRow: {
@@ -43,8 +43,8 @@ const ModalContentAction = (props) => {
     })
     : null;
 
-  const handleAddMerchant = (object) => {
-    ServiceAPI.addNewMerChant(object).then(
+  const handleAddUser = (object) => {
+    ServiceAPI.addNewUser(object).then(
       (response) => {
         props.showSuccess('Thêm mới thành công');
         handleClose();
@@ -55,8 +55,8 @@ const ModalContentAction = (props) => {
       }
     );
   };
-  const handleUpdateMerchant = (object) => {
-    ServiceAPI.updateMerchant(object).then(
+  const handleUpdateUser = (object) => {
+    ServiceAPI.updateUser(object).then(
       (response) => {
         props.showSuccess('Update thành công');
         handleClose();
@@ -69,11 +69,11 @@ const ModalContentAction = (props) => {
   };
 
   const roleType = [
-    { id: 'NAPAS: ', name: 'Có', disabled: false },
-    { id: 'PLATFORM_ADMIN', name: 'Có', disabled: false },
-    { id: 'STORE_ADMIN', name: 'Có', disabled: false },
-    { id: 'STORE_MANAGER', name: 'Có', disabled: false },
-    { id: 'STORE_COUNTER', name: 'Có', disabled: false },
+    { id: 'NAPAS', name: 'Napas', disabled: false },
+    { id: 'PLATFORM_ADMIN', name: 'Platform Admin', disabled: false },
+    { id: 'STORE_ADMIN', name: 'Store Admin', disabled: false },
+    { id: 'STORE_MANAGER', name: 'Store Manager', disabled: false },
+    { id: 'STORE_COUNTER', name: 'Store Counter', disabled: false },
   ];
 
   const stateType = [
@@ -85,7 +85,7 @@ const ModalContentAction = (props) => {
     { name: 'platformId', label: 'Platform', type: 'object', object: platformObject, required: true, show: props.actionModal.type == 'add' ? true : false },
     { name: 'username', label: 'Tài khoản', type: 'text', object: null, required: true, show: true },
     { name: 'password', label: 'Mật khẩu', type: 'password', object: null, required: true, show: props.actionModal.type == 'add' ? true : false },
-    { name: 'role', label: 'Vai trò', type: 'object', object: roleType, required: true, show: false },
+    { name: 'role', label: 'Vai trò', type: 'object', object: roleType, required: true, show: true },
     { name: 'firstName', label: 'Tên đệm và tên', type: 'text', object: null, required: true, show: true },
     { name: 'lastName', label: 'Họ', type: 'text', object: null, required: true, show: true },
     { name: 'email', label: 'Email', type: 'email', object: null, required: true, show: true },
@@ -144,10 +144,10 @@ const ModalContentAction = (props) => {
     }
     const trimmedFiltersInput = trimSpace(filtersInput)
     if (props.actionModal.type == 'add') {
-      handleAddMerchant(trimmedFiltersInput);
+      handleAddUser(trimmedFiltersInput);
     }
     if (props.actionModal.type == 'edit') {
-      handleUpdateMerchant(trimmedFiltersInput);
+      handleUpdateUser(trimmedFiltersInput);
     }
   };
   const trimSpace = (filtersInput) => {
@@ -179,17 +179,20 @@ const ModalContentAction = (props) => {
       if (type == 'object')
         if (name == "platformId") {
           return (
-            <SelectBoxAuto
-              name={name}
-              value={filtersInput[name]}
-              label={label}
-              object={object}
-              required={required}
-              showEm="0"
-              onChange={(event) => {
-                onFiltersInputChange(event);
-              }}
-            />
+            <>
+              <SelectBoxAuto
+                name={name}
+                value={filtersInput[name]}
+                label={label}
+                object={object}
+                required={required}
+                showEm="0"
+                onChange={(event) => {
+                  onFiltersInputChange(event);
+                }}
+              />
+             <FormHelperText sx={{ margin: '4px 14px 0px' }}>{helperText}</FormHelperText>
+            </>
           );
         } else {
           return (

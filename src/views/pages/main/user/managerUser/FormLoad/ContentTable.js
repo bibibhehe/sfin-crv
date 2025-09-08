@@ -50,7 +50,7 @@ const ContentTable = (props) => {
       lastName: '',
       email: '',
       phoneNumber: '',
-      state: '',
+      state: 'ACTIVE',
     };
   };
 

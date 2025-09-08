@@ -36,7 +36,8 @@ export default function CustomAutocomplete(props) {
   return (
     <Box className={classes.autoCompleteContainer}>
       <Autocomplete
-        options={buildShow(props.object)}
+      options={buildShow(props.object)}
+      value={props.value === '' ? null : props.object.find(item => item.id === props.value) || null}
         getOptionLabel={(option) => option.name}
         onChange={handleChange}
         onInputChange={(event, newInputValue) => {

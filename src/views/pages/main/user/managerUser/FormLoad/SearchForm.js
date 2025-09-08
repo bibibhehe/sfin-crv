@@ -2,14 +2,13 @@
 import { useState } from 'react';
 import { Grid, Button } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
-import SelectBox from 'ui-component/inputs/selectBox';
+import SelectBoxAuto from 'ui-component/inputs/selectBoxAuto';
 import TextField from 'ui-component/inputs/CustomTextField';
 
 const SearchForm = (props) => {
   const initFilterInput = () => ({
-    name: '',
-    mmCode: '',
-    status: ' '
+    platformId: '',
+    username: '',
   });
   const [filtersInput, setFiltersInput] = useState(initFilterInput);
   const handleSync = () => {
@@ -41,10 +40,12 @@ const SearchForm = (props) => {
         <Grid item xs={12} container justifyContent="flex-end">
           <Grid container justifyContent="space-between" alignItems="center" spacing={3}>
             <Grid item xs={12} md={3.5}>
-              <TextField
-                name="name"
-                label="Tên Merchant"
-                value={filtersInput['name']}
+              <SelectBoxAuto
+                name="platformId"
+                value={filtersInput['platformId']}
+                label="Platform"
+                object={props.dataPlatform}
+                showEm="1"
                 fullWidth
                 onChange={(event) => {
                   onFiltersInputChange(event);
@@ -53,26 +54,15 @@ const SearchForm = (props) => {
             </Grid>
             <Grid item xs={12} md={3.5}>
               <TextField
-                name="mmCode"
-                label="Merchant Code"
-                value={filtersInput['mmCode']}
+                name="username"
+                label="Tài khoản"
+                value={filtersInput['username']}
                 fullWidth
                 onChange={(event) => {
                   onFiltersInputChange(event);
                 }}
               />
             </Grid>
-            <Grid item xs={12} md={3}>
-              <SelectBox
-                name="status"
-                value={filtersInput['status']}
-                label="Trạng thái"
-                object={listStatus}
-                showEm="1"
-                onChange={onFiltersInputChange}
-              />
-            </Grid>
-
             <Grid item xs={12} md={2} container>
               <Button component="label" onClick={handleSync} variant="contained" tabIndex={-1} startIcon={<SearchIcon />}>
                 Lọc

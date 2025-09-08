@@ -122,7 +122,9 @@ const ManagerMerchant = () => {
 
   return (
     <MainCard title="Quản lý người dùng">
-      <SearchForm handleSearch1={handleSearch} />
+      <SearchForm handleSearch1={handleSearch}
+        dataPlatform={dataPlatform}
+      />
       <TableProccessing
         data={pageInfo}
         onLoad={handleReloadConfig01}

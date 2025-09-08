@@ -44,7 +44,7 @@ class BasicService {
       }
     }
     const valueFilter = buildQueryString(newfiltersInput);
-    return backendapi.get(API_URL + '/search?' + new URLSearchParams(page) + '&' + valueFilter, {
+    return backendapi.get(API_URL + '?' + new URLSearchParams(page) + '&' + valueFilter, {
       headers: authHeader()
     });
   }
